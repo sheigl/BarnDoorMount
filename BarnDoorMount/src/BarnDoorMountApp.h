@@ -27,5 +27,9 @@ class BarnDoorMountApp : public App
         BarnDoorMountApp() = default;        
         void setup() override;
         void loop() override;
-        void onInterrupt();
+
+        /*
+        * PWM Timer; on PWM Timer tick.
+        */
+        void onTimer1Interrupt();
 };
