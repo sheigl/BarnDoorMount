@@ -1,0 +1,11 @@
+Soft WDT reset
+
+>>>stack>>>
+
+ctx: cont
+sp: 3ffffde0 end: 3fffffc0 offset: 01a0
+3fffff80:  00000000 00000028 3ffee2d8 402013df  
+3fffff90:  3fffdad0 00000000 3ffee348 40201057  
+3fffffa0:  feefeffe feefeffe feefeffe 40201c7c  
+3fffffb0:  feefeffe feefeffe 3ffe84e0 40100c3d  
+<<<stack<<<
