@@ -12,11 +12,13 @@ void BarnDoorMountApp::setup()
     _return = new ReturnAction(_led);
     _button->OnLongPress(_return);
 
+    _motor = new Motor(EN_PIN, DIR_PIN, STEP_PIN);
+
     //set pin modes
     pinMode(EN_PIN, OUTPUT);
     digitalWrite(EN_PIN, HIGH); //deactivate driver (LOW active)
     pinMode(DIR_PIN, OUTPUT);
-    
+
     digitalWrite(DIR_PIN, HIGH); //LOW or HIGH
     pinMode(STEP_PIN, OUTPUT);
     digitalWrite(STEP_PIN, LOW);
@@ -34,6 +36,7 @@ void BarnDoorMountApp::setup()
 void BarnDoorMountApp::loop()
 {
     _led->Update();
+    _motor->Update();
 
     /* if (digitalRead(BTN_PIN) == 0) {
         digitalWrite(LED_PIN, HIGH);
@@ -64,3 +67,17 @@ void BarnDoorMountApp::loop()
 
     _button->Update();
 }
+
+void BarnDoorMountApp::onInterrupt()
+{
+    if (motorEnabled)
+    {
+        SET(PORTB, 4);
+        delayMicroseconds(2);
+        CLR(PORTB, 4);
+    }
+}
+
+
+
+

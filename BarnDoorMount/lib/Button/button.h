@@ -23,12 +23,14 @@ private:
     bool _didDoublePress;
     uint8_t _pin;
     ButtonCallback *_onPressCallback = nullptr;
+    ButtonCallback *_onDoublePressCallback = nullptr;
     ButtonCallback *_onLongPressCallback = nullptr;
 
     bool isPressed();
 public:    
     Button(uint8_t pin);
     void OnPress(ButtonCallback *callback);
+    void OnDoublePress(ButtonCallback *callback);
     void OnLongPress(ButtonCallback *callback);
     void Update();
 };

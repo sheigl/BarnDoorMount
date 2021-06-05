@@ -12,6 +12,11 @@ void Button::OnPress(ButtonCallback *callback)
     _onPressCallback = callback;
 }
 
+void Button::OnDoublePress(ButtonCallback *callback) 
+{
+    _onDoublePressCallback = callback;
+}
+
 void Button::OnLongPress(ButtonCallback *callback)
 {
     _onLongPressCallback = callback;
@@ -79,6 +84,11 @@ void Button::Update()
         {
             if (timeDelta > 250 && !_didDoublePress) {
                 DEBUG_MSG("double press");
+
+                if (_onDoublePressCallback != nullptr) {
+                    _onDoublePressCallback->Callback();
+                }
+
                 _didDoublePress = true;
             }
             
