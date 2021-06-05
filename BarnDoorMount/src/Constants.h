@@ -8,7 +8,7 @@ const float ComingUpSpeed = 1.25;
 /**
 * Distance from the centre of the hinge to the centre of the hole for the rod in milimiters
 */
-const float Length = 228;
+const float Length = 180.975;
 /**
  * Rotational velocity of the small gear
  */
