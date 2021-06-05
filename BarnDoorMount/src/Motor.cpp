@@ -10,6 +10,7 @@ Motor::Motor(uint8_t enablePin, uint8_t directionPin, uint8_t stepPin)
 Motor& Motor::Init() 
 {
     Disable();
+    setFastPWM();
     SetForward();
 
     return static_cast<Motor&>(*this);
