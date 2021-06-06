@@ -7,17 +7,19 @@ StartAction::StartAction(JLed *led, Motor *motor) {
 
 void StartAction::Callback()
 {
-    _led->Breathe(250)
+    /* _led->Breathe(250)
         .Repeat(3)
-        .MaxBrightness(10);
+        .MaxBrightness(10); */
 
     if (!_actionRunning) 
     {
+        //_motor->Enable();
         _motor->MoveForward();
         _actionRunning = true;
     }
     else 
     {
+        //_motor->Disable();
         _motor->Stop();
         _actionRunning = false;        
     }

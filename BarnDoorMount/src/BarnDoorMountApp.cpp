@@ -6,7 +6,7 @@ void BarnDoorMountApp::setup()
     _button = new Button(BTN_PIN);
     _led = new JLed(LED_PIN);
 
-    _motor = new Motor(EN_PIN, DIR_PIN, STEP_PIN);
+    _motor = new Motor(EN_PIN, DIR_PIN, STEP_PIN, _led);
     _motor->Init();    
 
     _start = new StartAction(_led, _motor);
@@ -20,6 +20,17 @@ void BarnDoorMountApp::loop()
 {
     _led->Update();
     _motor->Update();
+
+    /* if (_motor->Enabled) 
+    {
+        _led->On()
+            .MaxBrightness(100);
+    }
+    else 
+    {
+        _led->Off();
+    } */
+
     _button->Update();
 }
 

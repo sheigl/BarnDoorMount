@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include "Constants.h"
+#include <jled.h>
 
 class Motor
 {
@@ -14,16 +15,19 @@ private:
 
     Motor& setRpm();
     Motor& setFastPWM();
-    bool _enabled = false;
     float _rpm;
     uint16_t _period;
     uint8_t _enablePin, 
             _directionPin, 
             _stepPin;
 
+    JLed *_led;
+
 public:
-    Motor(uint8_t enablePin, uint8_t directionPin, uint8_t stepPin);
+    Motor(uint8_t enablePin, uint8_t directionPin, uint8_t stepPin, JLed *led);
     ~Motor() = default;
+
+    bool Enabled = false;
 
     /**
     * Init the motor

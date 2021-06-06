@@ -1,14 +1,19 @@
 #include "Motor.h"
 
-Motor::Motor(uint8_t enablePin, uint8_t directionPin, uint8_t stepPin) 
+Motor::Motor(uint8_t enablePin, uint8_t directionPin, uint8_t stepPin, JLed *led) 
 {
     _enablePin = enablePin;
     _directionPin = directionPin;
     _stepPin = stepPin;
+    _led = led;
 }
 
 Motor& Motor::Init() 
 {
+    pinMode(_enablePin, OUTPUT);
+    pinMode(_directionPin, OUTPUT);
+    pinMode(_stepPin, OUTPUT);
+
     Disable();
     setFastPWM();
     SetForward();
@@ -18,7 +23,7 @@ Motor& Motor::Init()
 
 Motor& Motor::Update() 
 {
-    if (_enabled) 
+    if (Enabled) 
     {
         _rpm++;
     }
@@ -34,16 +39,16 @@ Motor& Motor::Update()
 
 Motor& Motor::Enable() 
 {
-    digitalWrite(_enablePin, HIGH);
-    _enabled = true;
+    digitalWrite(_enablePin, LOW);
+    Enabled = true;
 
     return static_cast<Motor&>(*this);
 }
 
 Motor& Motor::Disable() 
 {
-    digitalWrite(_enablePin, LOW);
-    _enabled = false;
+    digitalWrite(_enablePin, HIGH);
+    Enabled = false;
 
     return static_cast<Motor&>(*this);
 }
@@ -53,15 +58,24 @@ Motor& Motor::Disable()
 */
 Motor& Motor::Step() 
 {
-    if (_enabled)
+    if (Enabled)
     {
+        _led->On()
+            .MaxBrightness(100);
+
         // Set STEP_PIN to HIGH, by setting port register and shifting bits
-        SET(PORTB, 4);
+        //SET(PORTB, 4);
+        digitalWrite(_stepPin, HIGH);
         
         delayMicroseconds(2);
 
         // Set STEP_PIN to LOW, by clearing port register
-        CLR(PORTB, 4);
+        //CLR(PORTB, 4);
+        digitalWrite(_stepPin, LOW);
+    }
+    else 
+    {
+        _led->Off();
     }
 
     return static_cast<Motor&>(*this);
@@ -71,6 +85,7 @@ Motor& Motor::MoveForward()
 {
     Enable();
     SetForward();
+    _rpm = 1;
     setRpm();
 
     return static_cast<Motor&>(*this);
@@ -118,12 +133,12 @@ Motor& Motor::setRpm()
     {
         // If RPM is 0, set PWM frequency/top value and disable motor
         ICR1 = ZeroSpeed;
-        Enable();
+        Disable();
     }
     else
     {
         // If RPM is not 0, enable the motor
-        Disable();
+        Enable();
 
         // Don't let _rpm go above MaxRpm
         if (_rpm > MaxRpm)
